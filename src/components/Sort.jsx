@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-function Sort() {
-  const [open, setOpen] = useState(false);
-  const [activeSort, setActiveSort] = useState(0);
-  const sorts = ['популярности', 'цене', 'алфавиту'];
-  const sortName = sorts[activeSort];
+import { sorts } from '../constants';
 
-  const onClickSort = (index) => {
-    setActiveSort(index);
+function Sort({ selected, onClickSort }) {
+  const [open, setOpen] = useState(false);
+  const sortName = sorts[selected];
+
+  const onClick = (index) => {
+    onClickSort(index);
     setOpen(false);
   };
 
@@ -33,8 +33,9 @@ function Sort() {
           <ul>
             {sorts.map((value, index) => (
               <li
-                onClick={() => onClickSort(index)}
-                className={index === activeSort ? 'active' : ''}>
+                key={index}
+                onClick={() => onClick(index)}
+                className={index === selected ? 'active' : ''}>
                 {value}
               </li>
             ))}
