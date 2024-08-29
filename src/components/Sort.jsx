@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 
 import { sorts } from '../constants';
 
-function Sort({ selected, onClickSort }) {
+import { useSelector, useDispatch } from 'react-redux';
+import { setSort } from '../redux/slices/filterSlice';
+
+function Sort() {
   const [open, setOpen] = useState(false);
-  const sortName = sorts[selected];
+  const dispatch = useDispatch();
+  const selectedSort = useSelector((state) => state.filter.selectedSort);
+  const sortName = sorts[selectedSort];
 
   const onClick = (index) => {
-    onClickSort(index);
+    dispatch(setSort({ index }));
     setOpen(false);
   };
 
@@ -35,7 +40,7 @@ function Sort({ selected, onClickSort }) {
               <li
                 key={index}
                 onClick={() => onClick(index)}
-                className={index === selected ? 'active' : ''}>
+                className={index === selectedSort ? 'active' : ''}>
                 {value}
               </li>
             ))}

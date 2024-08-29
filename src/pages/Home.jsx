@@ -9,15 +9,17 @@ import { SearchContext } from '../App';
 
 import { sortProperties } from '../constants';
 
+import { useSelector } from 'react-redux';
+
 const Home = () => {
   const [pizzas, setPizzas] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [selectedCategory, setSelectedCategory] = React.useState(0);
-  const [selectedSort, setSelectedSort] = React.useState(0);
   const [selectedPage, setSelectedPage] = React.useState(1);
-  const [pageCount, setPageCount] = React.useState('0');
+  const [pageCount, setPageCount] = React.useState(0);
 
   const { searchValue } = React.useContext(SearchContext);
+
+  const { selectedCategory, selectedSort } = useSelector((state) => state.filter);
 
   const url = new URL('https://c93cfe3de0ee6e43.mokky.dev/items');
 
@@ -44,16 +46,13 @@ const Home = () => {
   }, [selectedCategory, selectedSort, searchValue, selectedPage]);
 
   const items = pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
-  const sceletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
+  const sceletons = [...new Array(4)].map((_, index) => <Skeleton key={index} />);
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories
-          selected={selectedCategory}
-          onClickCategory={(index) => setSelectedCategory(index)}
-        />
-        <Sort selected={selectedSort} onClickSort={(index) => setSelectedSort(index)} />
+        <Categories />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? sceletons : items}</div>
