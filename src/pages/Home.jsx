@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -21,27 +22,26 @@ const Home = () => {
 
   const { selectedCategory, selectedSort } = useSelector((state) => state.filter);
 
-  const url = new URL('https://c93cfe3de0ee6e43.mokky.dev/items');
-
-  url.searchParams.append('page', selectedPage);
-  url.searchParams.append('limit', '4');
-  if (selectedCategory > 0) {
-    url.searchParams.append('category', selectedCategory);
-  }
-  url.searchParams.append('sortBy', sortProperties[selectedSort]);
-  if (searchValue) {
-    url.searchParams.append('title', `*${searchValue}`);
-  }
-
   React.useEffect(() => {
+    const url = new URL('https://c93cfe3de0ee6e43.mokky.dev/items');
+
+    url.searchParams.append('page', selectedPage);
+    url.searchParams.append('limit', '4');
+    if (selectedCategory > 0) {
+      url.searchParams.append('category', selectedCategory);
+    }
+    url.searchParams.append('sortBy', sortProperties[selectedSort]);
+    if (searchValue) {
+      url.searchParams.append('title', `*${searchValue}`);
+    }
     setIsLoading(true);
-    fetch(url)
-      .then((res) => res.json())
-      .then((arr) => {
-        setPizzas(arr.items);
-        setPageCount(arr.meta.total_pages);
-        setIsLoading(false);
-      });
+
+    axios.get(url).then((responce) => {
+      console.log(responce.data);
+      setPizzas(responce.data.items);
+      setPageCount(responce.data.meta.total_pages);
+      setIsLoading(false);
+    });
     window.scrollTo(0, 0);
   }, [selectedCategory, selectedSort, searchValue, selectedPage]);
 
