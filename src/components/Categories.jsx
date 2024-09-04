@@ -3,11 +3,22 @@ import React from 'react';
 import { categories } from '../constants';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setCategory } from '../redux/slices/filterSlice';
+import { setCategory, setFilters } from '../redux/slices/filterSlice';
 
 function Categories() {
-  const selectedCategory = useSelector((state) => state.filter.selectedCategory);
+  const { selectedCategory, selectedSort, pageCount } = useSelector((state) => state.filter);
   const dispatch = useDispatch();
+
+  const onClickCategory = (index) => {
+    dispatch(
+      setFilters({
+        selectedPage: 0,
+        selectedCategory: index,
+        selectedSort,
+        pageCount,
+      }),
+    );
+  };
 
   return (
     <div className="categories">
@@ -15,7 +26,7 @@ function Categories() {
         {categories.map((value, index) => (
           <li
             key={index}
-            onClick={() => dispatch(setCategory({ index }))}
+            onClick={() => onClickCategory(index)}
             className={selectedCategory === index ? 'active' : ''}>
             {value}
           </li>

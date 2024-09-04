@@ -1,8 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { act } from 'react';
 
 const initialState = {
   selectedCategory: 0,
   selectedSort: 0,
+  selectedPage: 0,
+  pageCount: 0,
 };
 
 export const filterSlice = createSlice({
@@ -10,15 +13,27 @@ export const filterSlice = createSlice({
   initialState,
   reducers: {
     setCategory: (state, action) => {
-      state.selectedCategory = action.payload.index;
+      state.selectedCategory = action.payload;
     },
     setSort: (state, action) => {
-      state.selectedSort = action.payload.index;
+      state.selectedSort = action.payload;
+    },
+    setPageCount: (state, action) => {
+      state.pageCount = action.payload;
+    },
+    setSelectedPage: (state, action) => {
+      state.selectedPage = action.payload;
+    },
+    setFilters: (state, action) => {
+      state.pageCount = Number(action.payload.pageCount);
+      state.selectedSort = Number(action.payload.selectedSort);
+      state.selectedCategory = Number(action.payload.selectedCategory);
+      state.selectedPage = Number(action.payload.selectedPage);
     },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { setCategory, setSort } = filterSlice.actions;
+export const { setCategory, setSort, setSelectedPage, setPageCount, setFilters } =
+  filterSlice.actions;
 
 export default filterSlice.reducer;

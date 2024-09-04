@@ -12,7 +12,7 @@ function Sort() {
   const sortName = sorts[selectedSort];
 
   const onClick = (index) => {
-    dispatch(setSort({ index }));
+    dispatch(setSort(index));
     setOpen(false);
   };
 
