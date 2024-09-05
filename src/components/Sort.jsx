@@ -10,14 +10,27 @@ function Sort() {
   const dispatch = useDispatch();
   const selectedSort = useSelector((state) => state.filter.selectedSort);
   const sortName = sorts[selectedSort];
+  const sortRef = React.useRef();
 
   const onClick = (index) => {
     dispatch(setSort(index));
     setOpen(false);
   };
 
+  React.useEffect(() => {
+    const handleClickEventListener = (event) => {
+      if (!event.composedPath().includes(sortRef.current)) {
+        setOpen(false);
+      }
+    };
+
+    document.body.addEventListener('click', handleClickEventListener);
+
+    return () => document.body.removeEventListener('click', handleClickEventListener);
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
