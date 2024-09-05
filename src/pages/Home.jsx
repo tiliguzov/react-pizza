@@ -21,9 +21,11 @@ const Home = () => {
 
   const [pizzas, setPizzas] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [isMounted, setIsMounted] = React.useState(false);
 
   const { searchValue } = React.useContext(SearchContext);
+
+  const isSearch = React.useRef(false);
+  const isMounted = React.useRef(false);
 
   const { selectedCategory, selectedSort, selectedPage, pageCount } = useSelector(
     (state) => state.filter,
@@ -62,20 +64,26 @@ const Home = () => {
   };
 
   React.useEffect(() => {
-    console.log('useEffect search url');
-    if (window.location.search && !isMounted) {
+    if (window.location.search) {
       dispatch(setFilters({ ...qs.parse(window.location.search.substring(1)), pageCount }));
+      isSearch.current = true;
     }
-    setIsMounted(true);
   }, []);
 
   React.useEffect(() => {
-    if (isMounted) {
+    if (!isSearch.current) {
       fetchData();
+    }
+    isSearch.current = false;
+  }, [selectedCategory, selectedSort, selectedPage, searchValue]);
+
+  React.useEffect(() => {
+    if (isMounted.current) {
       const queryString = qs.stringify({ selectedSort, selectedCategory, selectedPage });
       navigate(`?${queryString}`);
     }
-  }, [selectedCategory, selectedSort, selectedPage, isMounted, searchValue]);
+    isMounted.current = true;
+  }, [selectedCategory, selectedSort, selectedPage, searchValue]);
 
   const items = pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
   const sceletons = [...new Array(4)].map((_, index) => <Skeleton key={index} />);
