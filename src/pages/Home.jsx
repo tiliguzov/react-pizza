@@ -21,6 +21,7 @@ const Home = () => {
 
   const [pizzas, setPizzas] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [cancelTokenSource, setCancelTokenSource] = React.useState(null);
 
   const { searchValue } = React.useContext(SearchContext);
 
@@ -31,6 +32,13 @@ const Home = () => {
   );
 
   const fetchData = () => {
+    if (cancelTokenSource) {
+      cancelTokenSource.cancel('Operation canceled due to new request.');
+    }
+
+    const source = axios.CancelToken.source();
+    setCancelTokenSource(source);
+
     const url = new URL('https://c93cfe3de0ee6e43.mokky.dev/items');
 
     url.searchParams.append('page', selectedPage + 1);
@@ -44,21 +52,30 @@ const Home = () => {
     }
     setIsLoading(true);
 
-    axios.get(url).then((responce) => {
-      console.log(responce.data);
-      setPizzas(responce.data.items);
-      const totalPages = responce.data.meta.total_pages;
-      const currentPage = responce.data.meta.current_page - 1;
-      dispatch(
-        setFilters({
-          selectedPage: currentPage,
-          pageCount: totalPages,
-          selectedSort,
-          selectedCategory,
-        }),
-      );
-      setIsLoading(false);
-    });
+    axios
+      .get(url, { cancelToken: source.token })
+      .then((responce) => {
+        console.log(responce.data);
+        setPizzas(responce.data.items);
+        const totalPages = responce.data.meta.total_pages;
+        const currentPage = responce.data.meta.current_page - 1;
+        dispatch(
+          setFilters({
+            selectedPage: currentPage,
+            pageCount: totalPages,
+            selectedSort,
+            selectedCategory,
+          }),
+        );
+        setIsLoading(false);
+      })
+      .catch((thrown) => {
+        if (axios.isCancel(thrown)) {
+          console.log('Request canceled', thrown.message);
+        } else {
+          console.error('Error occurred:', thrown);
+        }
+      });
     window.scrollTo(0, 0);
   };
 
