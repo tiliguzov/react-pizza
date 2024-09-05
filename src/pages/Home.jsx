@@ -24,8 +24,7 @@ const Home = () => {
 
   const { searchValue } = React.useContext(SearchContext);
 
-  const isSearch = React.useRef(false);
-  const isMounted = React.useRef(false);
+  const [isMounted, setIsMounted] = React.useState(false);
 
   const { selectedCategory, selectedSort, selectedPage, pageCount } = useSelector(
     (state) => state.filter,
@@ -66,23 +65,21 @@ const Home = () => {
   React.useEffect(() => {
     if (window.location.search) {
       dispatch(setFilters({ ...qs.parse(window.location.search.substring(1)), pageCount }));
-      isSearch.current = true;
     }
   }, []);
 
   React.useEffect(() => {
-    if (!isSearch.current) {
+    if (isMounted) {
       fetchData();
     }
-    isSearch.current = false;
-  }, [selectedCategory, selectedSort, selectedPage, searchValue]);
+  }, [selectedCategory, selectedSort, selectedPage, searchValue, isMounted]);
 
   React.useEffect(() => {
-    if (isMounted.current) {
+    if (isMounted) {
       const queryString = qs.stringify({ selectedSort, selectedCategory, selectedPage });
       navigate(`?${queryString}`);
     }
-    isMounted.current = true;
+    setIsMounted(true);
   }, [selectedCategory, selectedSort, selectedPage, searchValue]);
 
   const items = pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
