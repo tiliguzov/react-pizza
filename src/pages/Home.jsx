@@ -31,7 +31,7 @@ const Home = () => {
     (state) => state.filter,
   );
 
-  const fetchData = () => {
+  const fetchData = async () => {
     if (cancelTokenSource) {
       cancelTokenSource.cancel('Operation canceled due to new request.');
     }
@@ -52,30 +52,29 @@ const Home = () => {
     }
     setIsLoading(true);
 
-    axios
-      .get(url, { cancelToken: source.token })
-      .then((responce) => {
-        console.log(responce.data);
-        setPizzas(responce.data.items);
-        const totalPages = responce.data.meta.total_pages;
-        const currentPage = responce.data.meta.current_page - 1;
-        dispatch(
-          setFilters({
-            selectedPage: currentPage,
-            pageCount: totalPages,
-            selectedSort,
-            selectedCategory,
-          }),
-        );
+    try {
+      const responce = await axios.get(url, { cancelToken: source.token });
+      setPizzas(responce.data.items);
+      const totalPages = responce.data.meta.total_pages;
+      const currentPage = responce.data.meta.current_page - 1;
+      dispatch(
+        setFilters({
+          selectedPage: currentPage,
+          pageCount: totalPages,
+          selectedSort,
+          selectedCategory,
+        }),
+      );
+      setIsLoading(false);
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        console.error('Request canceled', error.message);
+      } else {
+        console.error('Error occurred:', error);
+        alert('Something went wrong');
         setIsLoading(false);
-      })
-      .catch((thrown) => {
-        if (axios.isCancel(thrown)) {
-          console.log('Request canceled', thrown.message);
-        } else {
-          console.error('Error occurred:', thrown);
-        }
-      });
+      }
+    }
     window.scrollTo(0, 0);
   };
 
