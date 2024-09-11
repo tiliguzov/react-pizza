@@ -15,7 +15,6 @@ function Pagination() {
       breakLabel="..."
       nextLabel=">"
       onPageChange={(event) => {
-        console.log(event.selected);
         dispatch(setSelectedPage(event.selected));
       }}
       forcePage={selectedPage}

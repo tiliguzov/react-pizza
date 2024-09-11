@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { fetchPizzas } from '../slices/pizzasSlice';
 
 const initialState = {
   selectedCategory: 0,
@@ -12,16 +13,16 @@ export const filterSlice = createSlice({
   initialState,
   reducers: {
     setCategory: (state, action) => {
-      state.selectedCategory = action.payload;
+      state.selectedCategory = Number(action.payload);
     },
     setSort: (state, action) => {
-      state.selectedSort = action.payload;
+      state.selectedSort = Number(action.payload);
     },
     setPageCount: (state, action) => {
-      state.pageCount = action.payload;
+      state.pageCount = Number(action.payload);
     },
     setSelectedPage: (state, action) => {
-      state.selectedPage = action.payload;
+      state.selectedPage = Number(action.payload);
     },
     setFilters: (state, action) => {
       state.pageCount = Number(action.payload.pageCount);
@@ -30,9 +31,16 @@ export const filterSlice = createSlice({
       state.selectedPage = Number(action.payload.selectedPage);
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchPizzas.fulfilled, (state, action) => {
+      state.selectedPage = Number(action.payload.meta.current_page - 1);
+      state.pageCount = Number(action.payload.meta.total_pages);
+      console.log('Filter FULFILLED', state.selectedPage, state.pageCount);
+    });
+  },
 });
 
-export const { setCategory, setSort, setSelectedPage, setPageCount, setFilters } =
+export const { setCategory, setSort, setSelectedPage, setPageCount, setFilters, setPageInfo } =
   filterSlice.actions;
 
 export default filterSlice.reducer;

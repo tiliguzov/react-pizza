@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import qs from 'qs';
 
 import Categories from '../components/Categories';
@@ -12,16 +11,14 @@ import { SearchContext } from '../App';
 import { sortProperties } from '../constants';
 import { setFilters } from '../redux/slices/filterSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { fetchPizzas } from '../redux/slices/pizzasSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [pizzas, setPizzas] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [cancelTokenSource, setCancelTokenSource] = React.useState(null);
+  const { status, pizzas } = useSelector((state) => state.pizzas);
 
   const { searchValue } = React.useContext(SearchContext);
 
@@ -31,50 +28,15 @@ const Home = () => {
     (state) => state.filter,
   );
 
-  const fetchData = async () => {
-    if (cancelTokenSource) {
-      cancelTokenSource.cancel('Operation canceled due to new request.');
-    }
-
-    const source = axios.CancelToken.source();
-    setCancelTokenSource(source);
-
-    const url = new URL('https://c93cfe3de0ee6e43.mokky.dev/items');
-
-    url.searchParams.append('page', selectedPage + 1);
-    url.searchParams.append('limit', '4');
-    if (selectedCategory > 0) {
-      url.searchParams.append('category', selectedCategory);
-    }
-    url.searchParams.append('sortBy', sortProperties[selectedSort]);
-    if (searchValue) {
-      url.searchParams.append('title', `*${searchValue}`);
-    }
-    setIsLoading(true);
-
-    try {
-      const responce = await axios.get(url, { cancelToken: source.token });
-      setPizzas(responce.data.items);
-      const totalPages = responce.data.meta.total_pages;
-      const currentPage = responce.data.meta.current_page - 1;
-      dispatch(
-        setFilters({
-          selectedPage: currentPage,
-          pageCount: totalPages,
-          selectedSort,
-          selectedCategory,
-        }),
-      );
-      setIsLoading(false);
-    } catch (error) {
-      if (axios.isCancel(error)) {
-        console.error('Request canceled', error.message);
-      } else {
-        console.error('Error occurred:', error);
-        alert('Something went wrong');
-        setIsLoading(false);
-      }
-    }
+  const getData = async () => {
+    dispatch(
+      fetchPizzas({
+        selectedPage,
+        selectedCategory,
+        selectedSort: sortProperties[selectedSort],
+        searchValue,
+      }),
+    );
     window.scrollTo(0, 0);
   };
 
@@ -86,7 +48,7 @@ const Home = () => {
 
   React.useEffect(() => {
     if (isMounted) {
-      fetchData();
+      getData();
     }
   }, [selectedCategory, selectedSort, selectedPage, searchValue, isMounted]);
 
@@ -108,7 +70,14 @@ const Home = () => {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isLoading ? sceletons : items}</div>
+      {status === 'rejected' ? (
+        <div className="content__error-info">
+          <h2>Произошла ошибка😕</h2>
+          <p>К сожалению, не удалось получить питсы :( Попробуйте повторить попытку позже</p>
+        </div>
+      ) : (
+        <div className="content__items">{status === 'loading' ? sceletons : items}</div>
+      )}
       <Pagination />
     </div>
   );
