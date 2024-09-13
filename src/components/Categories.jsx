@@ -4,9 +4,10 @@ import { categories } from '../constants';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setCategory, setFilters } from '../redux/slices/filterSlice';
+import { selectFilter } from '../pages/Home';
 
 function Categories() {
-  const { selectedCategory, selectedSort, pageCount } = useSelector((state) => state.filter);
+  const { selectedCategory, selectedSort, pageCount } = useSelector(selectFilter);
   const dispatch = useDispatch();
 
   const onClickCategory = (index) => {

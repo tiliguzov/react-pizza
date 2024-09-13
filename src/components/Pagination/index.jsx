@@ -4,11 +4,12 @@ import ReactPaginate from 'react-paginate';
 import styles from './Pagination.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedPage } from '../../redux/slices/filterSlice';
+import { selectFilter } from '../../pages/Home';
 
 function Pagination() {
   const dispatch = useDispatch();
 
-  const { pageCount, selectedPage } = useSelector((state) => state.filter);
+  const { pageCount, selectedPage } = useSelector(selectFilter);
   return (
     <ReactPaginate
       className={styles.root}

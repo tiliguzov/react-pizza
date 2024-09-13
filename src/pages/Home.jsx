@@ -18,15 +18,13 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { status, pizzas } = useSelector((state) => state.pizzas);
+  const { status, pizzas } = useSelector(selectPizzas);
 
   const { searchValue } = React.useContext(SearchContext);
 
   const [isMounted, setIsMounted] = React.useState(false);
 
-  const { selectedCategory, selectedSort, selectedPage, pageCount } = useSelector(
-    (state) => state.filter,
-  );
+  const { selectedCategory, selectedSort, selectedPage, pageCount } = useSelector(selectFilter);
 
   const getData = async () => {
     dispatch(
@@ -82,5 +80,8 @@ const Home = () => {
     </div>
   );
 };
+
+export const selectFilter = (state) => state.filter;
+export const selectPizzas = (state) => state.pizzas;
 
 export default Home;

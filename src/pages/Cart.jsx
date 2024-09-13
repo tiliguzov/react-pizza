@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { clearItems } from '../redux/slices/cartSlice';
 
 const Cart = () => {
-  const { items, totalPrice, totalCount } = useSelector((state) => state.cart);
+  const { items, totalPrice, totalCount } = useSelector(selectCart);
   const dispatch = useDispatch();
 
   const onClearItems = () => {
@@ -141,5 +141,7 @@ const Cart = () => {
     </div>
   );
 };
+
+export const selectCart = (state) => state.cart;
 
 export default Cart;

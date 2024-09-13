@@ -5,7 +5,7 @@ import { addItem } from '../../redux/slices/cartSlice';
 
 function PizzaBlock({ id, title, price, imageUrl, types, sizes }) {
   const dispatch = useDispatch();
-  const cartItem = useSelector((state) => state.cart.items.find((obj) => obj.id === id));
+  const cartItem = useSelector(selectCartItemById);
   const [activeType, setActiveType] = React.useState(0);
   const [activeSize, setActiveSize] = React.useState(0);
 
@@ -75,5 +75,7 @@ function PizzaBlock({ id, title, price, imageUrl, types, sizes }) {
     </div>
   );
 }
+
+const selectCartItemById = (id) => (state) => state.cart.items.find((obj) => obj.id === id);
 
 export default PizzaBlock;
