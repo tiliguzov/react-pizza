@@ -20,11 +20,10 @@ const Home = () => {
 
   const { status, pizzas } = useSelector(selectPizzas);
 
-  const { searchValue } = React.useContext(SearchContext);
-
   const [isMounted, setIsMounted] = React.useState(false);
 
-  const { selectedCategory, selectedSort, selectedPage, pageCount } = useSelector(selectFilter);
+  const { selectedCategory, selectedSort, selectedPage, pageCount, searchValue } =
+    useSelector(selectFilter);
 
   const getData = async () => {
     dispatch(

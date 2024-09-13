@@ -6,6 +6,7 @@ const initialState = {
   selectedSort: 0,
   selectedPage: 0,
   pageCount: 0,
+  searchValue: '',
 };
 
 export const filterSlice = createSlice({
@@ -24,6 +25,9 @@ export const filterSlice = createSlice({
     setSelectedPage: (state, action) => {
       state.selectedPage = Number(action.payload);
     },
+    setSearchValue: (state, action) => {
+      state.searchValue = action.payload;
+    },
     setFilters: (state, action) => {
       state.pageCount = Number(action.payload.pageCount);
       state.selectedSort = Number(action.payload.selectedSort);
@@ -40,7 +44,14 @@ export const filterSlice = createSlice({
   },
 });
 
-export const { setCategory, setSort, setSelectedPage, setPageCount, setFilters, setPageInfo } =
-  filterSlice.actions;
+export const {
+  setCategory,
+  setSort,
+  setSelectedPage,
+  setPageCount,
+  setSearchValue,
+  setFilters,
+  setPageInfo,
+} = filterSlice.actions;
 
 export default filterSlice.reducer;
