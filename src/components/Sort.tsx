@@ -19,8 +19,8 @@ const Sort: React.FC = () => {
   };
 
   React.useEffect(() => {
-    const handleClickEventListener = (event: any) => {
-      if (!event.composedPath().includes(sortRef.current)) {
+    const handleClickEventListener = (event: MouseEvent) => {
+      if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
         setOpen(false);
       }
     };

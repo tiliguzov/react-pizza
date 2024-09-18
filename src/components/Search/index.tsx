@@ -46,7 +46,7 @@ const Search: React.FC = () => {
       <input
         ref={inputRef}
         value={inputValue}
-        onChange={(event) => onChangeInput(event.target.value)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChangeInput(event.target.value)}
         className={styles.input}
         placeholder="Поиск пиццы ..."
       />
