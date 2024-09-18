@@ -3,14 +3,14 @@ import React from 'react';
 import { categories } from '../constants';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setCategory, setFilters } from '../redux/slices/filterSlice';
+import { setFilters } from '../redux/slices/filterSlice';
 import { selectFilter } from '../pages/Home';
 
-function Categories() {
+const Categories: React.FC = () => {
   const { selectedCategory, selectedSort, pageCount } = useSelector(selectFilter);
   const dispatch = useDispatch();
 
-  const onClickCategory = (index) => {
+  const onClickCategory = (index: number) => {
     dispatch(
       setFilters({
         selectedPage: 0,
@@ -35,6 +35,6 @@ function Categories() {
       </ul>
     </div>
   );
-}
+};
 
 export default Categories;

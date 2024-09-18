@@ -6,20 +6,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setSort } from '../redux/slices/filterSlice';
 import { selectFilter } from '../pages/Home';
 
-function Sort() {
+const Sort: React.FC = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const { selectedSort } = useSelector(selectFilter);
   const sortName = sorts[selectedSort];
-  const sortRef = React.useRef();
+  const sortRef = React.useRef<HTMLDivElement>(null);
 
-  const onClick = (index) => {
+  const onClick = (index: number) => {
     dispatch(setSort(index));
     setOpen(false);
   };
 
   React.useEffect(() => {
-    const handleClickEventListener = (event) => {
+    const handleClickEventListener = (event: any) => {
       if (!event.composedPath().includes(sortRef.current)) {
         setOpen(false);
       }
@@ -63,6 +63,6 @@ function Sort() {
       )}
     </div>
   );
-}
+};
 
 export default Sort;

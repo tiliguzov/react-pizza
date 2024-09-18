@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPizzas } from '../redux/slices/pizzasSlice';
 import { useNavigate } from 'react-router-dom';
 
-const Home = () => {
+const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -26,6 +26,7 @@ const Home = () => {
 
   const getData = async () => {
     dispatch(
+      // @ts-ignore
       fetchPizzas({
         selectedPage,
         selectedCategory,
@@ -56,7 +57,7 @@ const Home = () => {
     setIsMounted(true);
   }, [selectedCategory, selectedSort, selectedPage, searchValue]);
 
-  const items = pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+  const items = pizzas.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
   const sceletons = [...new Array(4)].map((_, index) => <Skeleton key={index} />);
 
   return (
@@ -79,7 +80,7 @@ const Home = () => {
   );
 };
 
-export const selectFilter = (state) => state.filter;
-export const selectPizzas = (state) => state.pizzas;
+export const selectFilter = (state: any) => state.filter;
+export const selectPizzas = (state: any) => state.pizzas;
 
 export default Home;

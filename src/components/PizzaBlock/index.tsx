@@ -4,7 +4,16 @@ import { Link } from 'react-router-dom';
 
 import { addItem } from '../../redux/slices/cartSlice';
 
-function PizzaBlock({ id, title, price, imageUrl, types, sizes }) {
+type PizzaBlockProps = {
+  id: number;
+  title: string;
+  price: number;
+  imageUrl: string;
+  types: number[];
+  sizes: number[];
+};
+
+const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, title, price, imageUrl, types, sizes }) => {
   const dispatch = useDispatch();
   const cartItem = useSelector(selectCartItemById(id));
   const [activeType, setActiveType] = React.useState(0);
@@ -37,7 +46,7 @@ function PizzaBlock({ id, title, price, imageUrl, types, sizes }) {
 
         <div className="pizza-block__selector">
           <ul>
-            {types.map((type, index) => (
+            {types.map((type: number, index: number) => (
               <li
                 key={type}
                 onClick={() => setActiveType(index)}
@@ -78,8 +87,9 @@ function PizzaBlock({ id, title, price, imageUrl, types, sizes }) {
       </div>
     </div>
   );
-}
+};
 
-const selectCartItemById = (id) => (state) => state.cart.items.find((obj) => obj.id === id);
+const selectCartItemById = (id: number) => (state: any) =>
+  state.cart.items.find((obj: any) => obj.id === id);
 
 export default PizzaBlock;

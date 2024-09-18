@@ -5,7 +5,7 @@ import Search from './Search';
 import { useSelector } from 'react-redux';
 import { selectCart } from '../pages/Cart';
 
-function Header() {
+const Header: React.FC = () => {
   const { pathname } = useLocation();
   const { totalPrice, totalCount } = useSelector(selectCart);
 
@@ -63,6 +63,6 @@ function Header() {
       </div>
     </div>
   );
-}
+};
 
 export default Header;
