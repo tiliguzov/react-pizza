@@ -11,7 +11,7 @@ import { sortProperties } from '../constants';
 import { setFilters } from '../redux/slices/filterSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPizzas } from '../redux/slices/pizzasSlice';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();

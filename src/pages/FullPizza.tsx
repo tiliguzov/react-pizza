@@ -2,17 +2,21 @@ import React from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const FullPizza = () => {
-  const [pizzaData, setPizzaData] = React.useState(null);
+const FullPizza: React.FC = () => {
+  const [pizzaData, setPizzaData] = React.useState<{
+    imageUrl: string;
+    title: string;
+    price: number;
+  }>();
   const { id } = useParams();
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    const fetchItemData = async (id) => {
+    const fetchItemData = async (id: string) => {
       const url = new URL('https://c93cfe3de0ee6e43.mokky.dev/items/' + id);
 
       try {
-        const { data } = await axios.get(url);
+        const { data } = await axios.get(url.toString());
         setPizzaData(data);
       } catch {
         alert('Ошибка при получении пиццы');
@@ -20,11 +24,13 @@ const FullPizza = () => {
       }
     };
 
-    fetchItemData(id);
+    if (id) {
+      fetchItemData(id);
+    }
   }, []);
 
   if (!pizzaData) {
-    return <p>Загрузка...</p>;
+    return <>Загрузка...</>;
   }
 
   return (
