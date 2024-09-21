@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 
 import { sorts } from '../constants';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setSort } from '../redux/slices/filterSlice';
-import { selectFilter } from '../pages/Home';
 
-const Sort: React.FC = () => {
+type SortProps = {
+  value: number;
+};
+
+const Sort: React.FC<SortProps> = React.memo(({ value }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const { selectedSort } = useSelector(selectFilter);
+  const selectedSort = value;
   const sortName = sorts[selectedSort];
   const sortRef = React.useRef<HTMLDivElement>(null);
 
@@ -63,6 +66,6 @@ const Sort: React.FC = () => {
       )}
     </div>
   );
-};
+});
 
 export default Sort;

@@ -9,13 +9,14 @@ import Pagination from '../components/Pagination';
 
 import { sortProperties } from '../constants';
 import { setFilters } from '../redux/slices/filterSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { fetchPizzas } from '../redux/slices/pizzasSlice';
 import { useNavigate } from 'react-router-dom';
+import { RootState, useAppDispatch } from '../redux/store';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { status, pizzas } = useSelector(selectPizzas);
 
@@ -26,7 +27,6 @@ const Home: React.FC = () => {
 
   const getData = async () => {
     dispatch(
-      // @ts-ignore
       fetchPizzas({
         selectedPage,
         selectedCategory,
@@ -39,7 +39,12 @@ const Home: React.FC = () => {
 
   React.useEffect(() => {
     if (window.location.search) {
-      dispatch(setFilters({ ...qs.parse(window.location.search.substring(1)), pageCount }));
+      const searchParams = {
+        selectedPage: Number(qs.parse(window.location.search.substring(1)).selectedPage),
+        selectedSort: Number(qs.parse(window.location.search.substring(1)).selectedSort),
+        selectedCategory: Number(qs.parse(window.location.search.substring(1)).selectedCategory),
+      };
+      dispatch(setFilters({ ...searchParams, pageCount }));
     }
   }, []);
 
@@ -63,8 +68,8 @@ const Home: React.FC = () => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories />
-        <Sort />
+        <Categories selectedCategory={selectedCategory} />
+        <Sort value={selectedSort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === 'rejected' ? (
@@ -80,7 +85,7 @@ const Home: React.FC = () => {
   );
 };
 
-export const selectFilter = (state: any) => state.filter;
-export const selectPizzas = (state: any) => state.pizzas;
+export const selectFilter = (state: RootState) => state.filter;
+export const selectPizzas = (state: RootState) => state.pizzas;
 
 export default Home;

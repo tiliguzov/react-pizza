@@ -2,24 +2,23 @@ import React from 'react';
 
 import { categories } from '../constants';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { setFilters } from '../redux/slices/filterSlice';
-import { selectFilter } from '../pages/Home';
+import { useDispatch } from 'react-redux';
+import { setCategory, setSelectedPage } from '../redux/slices/filterSlice';
 
-const Categories: React.FC = () => {
-  const { selectedCategory, selectedSort, pageCount } = useSelector(selectFilter);
+type CategoriesProps = {
+  selectedCategory: number;
+};
+
+const Categories: React.FC<CategoriesProps> = React.memo(({ selectedCategory }) => {
   const dispatch = useDispatch();
 
-  const onClickCategory = (index: number) => {
-    dispatch(
-      setFilters({
-        selectedPage: 0,
-        selectedCategory: index,
-        selectedSort,
-        pageCount,
-      }),
-    );
-  };
+  const onClickCategory = React.useCallback(
+    (index: number) => () => {
+      dispatch(setSelectedPage(0));
+      dispatch(setCategory(index));
+    },
+    [],
+  );
 
   return (
     <div className="categories">
@@ -27,7 +26,7 @@ const Categories: React.FC = () => {
         {categories.map((value, index) => (
           <li
             key={index}
-            onClick={() => onClickCategory(index)}
+            onClick={onClickCategory(index)}
             className={selectedCategory === index ? 'active' : ''}>
             {value}
           </li>
@@ -35,6 +34,6 @@ const Categories: React.FC = () => {
       </ul>
     </div>
   );
-};
+});
 
 export default Categories;
