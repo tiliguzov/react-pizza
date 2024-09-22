@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { sorts } from '../constants';
 
 import { useDispatch } from 'react-redux';
-import { setSort } from '../redux/slices/filterSlice';
+import { setSort } from '../redux/filter/slice';
 
 type SortProps = {
   value: number;

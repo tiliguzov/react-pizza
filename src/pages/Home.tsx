@@ -8,11 +8,13 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 
 import { sortProperties } from '../constants';
-import { setFilters } from '../redux/slices/filterSlice';
+import { setFilters } from '../redux/filter/slice';
 import { useSelector } from 'react-redux';
-import { fetchPizzas } from '../redux/slices/pizzasSlice';
+import { fetchPizzas } from '../redux/pizzas/asyncActions';
 import { useNavigate } from 'react-router-dom';
-import { RootState, useAppDispatch } from '../redux/store';
+import { useAppDispatch } from '../redux/store';
+import { selectPizzas } from '../redux/pizzas/selectors';
+import { selectFilter } from '../redux/filter/selectors';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -84,8 +86,5 @@ const Home: React.FC = () => {
     </div>
   );
 };
-
-export const selectFilter = (state: RootState) => state.filter;
-export const selectPizzas = (state: RootState) => state.pizzas;
 
 export default Home;

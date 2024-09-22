@@ -3,7 +3,7 @@ import React from 'react';
 import { categories } from '../constants';
 
 import { useDispatch } from 'react-redux';
-import { setCategory, setSelectedPage } from '../redux/slices/filterSlice';
+import { setCategory, setSelectedPage } from '../redux/filter/slice';
 
 type CategoriesProps = {
   selectedCategory: number;

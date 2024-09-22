@@ -1,13 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { fetchPizzas } from './pizzasSlice';
-
-interface FilterSliceState {
-  selectedCategory: number;
-  selectedSort: number;
-  selectedPage: number;
-  pageCount: number;
-  searchValue?: string;
-}
+import { fetchPizzas } from '../pizzas/asyncActions';
+import { FilterSliceState } from './types';
 
 const initialState: FilterSliceState = {
   selectedCategory: 0,
@@ -47,7 +40,6 @@ export const filterSlice = createSlice({
     builder.addCase(fetchPizzas.fulfilled, (state, action) => {
       state.selectedPage = action.payload.meta.current_page - 1;
       state.pageCount = action.payload.meta.total_pages;
-      console.log('Filter FULFILLED', state.selectedPage, state.pageCount);
     });
   },
 });

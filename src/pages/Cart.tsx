@@ -6,8 +6,8 @@ import CartEmpty from '../components/CartEmpty';
 import { useSelector } from 'react-redux';
 
 import { useDispatch } from 'react-redux';
-import { clearItems } from '../redux/slices/cartSlice';
-import { RootState } from '../redux/store';
+import { clearItems } from '../redux/cart/slice';
+import { selectCart } from '../redux/cart/selectors';
 
 const Cart: React.FC = () => {
   const { items, totalPrice, totalCount } = useSelector(selectCart);
@@ -142,7 +142,5 @@ const Cart: React.FC = () => {
     </div>
   );
 };
-
-export const selectCart = (state: RootState) => state.cart;
 
 export default Cart;
