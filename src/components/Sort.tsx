@@ -9,7 +9,7 @@ type SortProps = {
   value: number;
 };
 
-const Sort: React.FC<SortProps> = React.memo(({ value }) => {
+export const Sort: React.FC<SortProps> = React.memo(({ value }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const selectedSort = value;
@@ -67,5 +67,3 @@ const Sort: React.FC<SortProps> = React.memo(({ value }) => {
     </div>
   );
 });
-
-export default Sort;

@@ -1,11 +1,7 @@
 import React from 'react';
 import qs from 'qs';
 
-import Categories from '../components/Categories';
-import Sort from '../components/Sort';
-import PizzaBlock from '../components/PizzaBlock';
-import Skeleton from '../components/PizzaBlock/Skeleton';
-import Pagination from '../components/Pagination';
+import { Categories, Sort, PizzaBlock, Skeleton, Pagination } from '../components';
 
 import { sortProperties } from '../constants';
 import { setFilters } from '../redux/filter/slice';

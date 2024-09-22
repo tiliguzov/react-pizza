@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedPage } from '../../redux/filter/slice';
 import { selectFilter } from '../../redux/filter/selectors';
 
-const Pagination: React.FC = () => {
+export const Pagination: React.FC = () => {
   const dispatch = useDispatch();
 
   const { pageCount, selectedPage } = useSelector(selectFilter);
@@ -26,5 +26,3 @@ const Pagination: React.FC = () => {
     />
   );
 };
-
-export default Pagination;

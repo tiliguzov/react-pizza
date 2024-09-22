@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectFilter } from '../../redux/filter/selectors';
 import { setSearchValue } from '../../redux/filter/slice';
 
-const Search: React.FC = () => {
+export const Search: React.FC = () => {
   const dispatch = useDispatch();
   const { searchValue } = useSelector(selectFilter);
   const [inputValue, setInputValue] = React.useState(searchValue);
@@ -69,5 +69,3 @@ const Search: React.FC = () => {
     </div>
   );
 };
-
-export default Search;

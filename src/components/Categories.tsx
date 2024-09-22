@@ -9,7 +9,7 @@ type CategoriesProps = {
   selectedCategory: number;
 };
 
-const Categories: React.FC<CategoriesProps> = React.memo(({ selectedCategory }) => {
+export const Categories: React.FC<CategoriesProps> = React.memo(({ selectedCategory }) => {
   const dispatch = useDispatch();
 
   const onClickCategory = React.useCallback(
@@ -35,5 +35,3 @@ const Categories: React.FC<CategoriesProps> = React.memo(({ selectedCategory }) 
     </div>
   );
 });
-
-export default Categories;
