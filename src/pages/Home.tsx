@@ -3,7 +3,6 @@ import qs from 'qs';
 
 import { Categories, Sort, PizzaBlock, Skeleton, Pagination } from '../components';
 
-import { sortProperties } from '../constants';
 import { setFilters } from '../redux/filter/slice';
 import { useSelector } from 'react-redux';
 import { fetchPizzas } from '../redux/pizzas/asyncActions';
@@ -11,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
 import { selectPizzas } from '../redux/pizzas/selectors';
 import { selectFilter } from '../redux/filter/selectors';
+import { SortNames } from '../redux/filter/types';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Home: React.FC = () => {
 
   const [isMounted, setIsMounted] = React.useState(false);
 
-  const { selectedCategory, selectedSort, selectedPage, pageCount, searchValue } =
+  const { selectedCategory, selectedSort, selectedPage, pageCount, searchValue, selectedOrder } =
     useSelector(selectFilter);
 
   const getData = async () => {
@@ -28,8 +28,9 @@ const Home: React.FC = () => {
       fetchPizzas({
         selectedPage,
         selectedCategory,
-        selectedSort: sortProperties[selectedSort],
+        selectedSort,
         searchValue,
+        selectedOrder,
       }),
     );
     window.scrollTo(0, 0);
@@ -39,10 +40,10 @@ const Home: React.FC = () => {
     if (window.location.search) {
       const searchParams = {
         selectedPage: Number(qs.parse(window.location.search.substring(1)).selectedPage),
-        selectedSort: Number(qs.parse(window.location.search.substring(1)).selectedSort),
+        selectedSort: qs.parse(window.location.search.substring(1)).selectedSort as SortNames,
         selectedCategory: Number(qs.parse(window.location.search.substring(1)).selectedCategory),
       };
-      dispatch(setFilters({ ...searchParams, pageCount }));
+      if (selectedSort) dispatch(setFilters({ ...searchParams, pageCount, selectedOrder }));
     }
   }, []);
 
@@ -50,7 +51,7 @@ const Home: React.FC = () => {
     if (isMounted) {
       getData();
     }
-  }, [selectedCategory, selectedSort, selectedPage, searchValue, isMounted]);
+  }, [selectedCategory, selectedSort, selectedPage, searchValue, selectedOrder, isMounted]);
 
   React.useEffect(() => {
     if (isMounted) {
@@ -67,7 +68,7 @@ const Home: React.FC = () => {
     <div className="container">
       <div className="content__top">
         <Categories selectedCategory={selectedCategory} />
-        <Sort value={selectedSort} />
+        <Sort value={selectedSort} order={selectedOrder} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === 'rejected' ? (

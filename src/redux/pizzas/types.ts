@@ -1,3 +1,5 @@
+import { Order } from '../filter/types';
+
 export type PizzaItem = {
   id: number;
   imageUrl: string;
@@ -25,6 +27,7 @@ export type FetchPizzaArgs = {
   selectedCategory: number;
   selectedSort: string;
   searchValue?: string;
+  selectedOrder: Order;
 };
 
 export type Meta = {

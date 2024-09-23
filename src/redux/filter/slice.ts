@@ -1,13 +1,14 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { fetchPizzas } from '../pizzas/asyncActions';
-import { FilterSliceState } from './types';
+import { FilterSliceState, Order, SortNames } from './types';
 
 const initialState: FilterSliceState = {
   selectedCategory: 0,
-  selectedSort: 0,
+  selectedSort: SortNames.RATING,
   selectedPage: 0,
   pageCount: 0,
   searchValue: '',
+  selectedOrder: Order.ASC,
 };
 
 export const filterSlice = createSlice({
@@ -17,7 +18,7 @@ export const filterSlice = createSlice({
     setCategory: (state, action: PayloadAction<number>) => {
       state.selectedCategory = action.payload;
     },
-    setSort: (state, action: PayloadAction<number>) => {
+    setSort: (state, action: PayloadAction<SortNames>) => {
       state.selectedSort = action.payload;
     },
     setPageCount: (state, action: PayloadAction<number>) => {
@@ -29,11 +30,15 @@ export const filterSlice = createSlice({
     setSearchValue: (state, action: PayloadAction<string>) => {
       state.searchValue = action.payload;
     },
+    setOrder: (state, action: PayloadAction<Order>) => {
+      state.selectedOrder = action.payload;
+    },
     setFilters: (state, action: PayloadAction<FilterSliceState>) => {
       state.pageCount = action.payload.pageCount;
       state.selectedSort = action.payload.selectedSort;
       state.selectedCategory = action.payload.selectedCategory;
       state.selectedPage = action.payload.selectedPage;
+      state.selectedOrder = action.payload.selectedOrder;
     },
   },
   extraReducers: (builder) => {
@@ -44,7 +49,14 @@ export const filterSlice = createSlice({
   },
 });
 
-export const { setCategory, setSort, setSelectedPage, setPageCount, setSearchValue, setFilters } =
-  filterSlice.actions;
+export const {
+  setCategory,
+  setSort,
+  setSelectedPage,
+  setPageCount,
+  setOrder,
+  setSearchValue,
+  setFilters,
+} = filterSlice.actions;
 
 export default filterSlice.reducer;
