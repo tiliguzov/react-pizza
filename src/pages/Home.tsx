@@ -70,11 +70,11 @@ const Home: React.FC = () => {
         <Categories selectedCategory={selectedCategory} />
         <Sort value={selectedSort} order={selectedOrder} />
       </div>
-      <h2 className="content__title">Все пиццы</h2>
+      <h2 className="content__title">All pizzas</h2>
       {status === 'rejected' ? (
         <div className="content__error-info">
-          <h2>Произошла ошибка😕</h2>
-          <p>К сожалению, не удалось получить питсы :( Попробуйте повторить попытку позже</p>
+          <h2>An error occurred😕</h2>
+          <p>Unfortunately, we couldn't fetch the pizzanators :( Please try again later</p>
         </div>
       ) : (
         <div className="content__items">{status === 'loading' ? sceletons : items}</div>

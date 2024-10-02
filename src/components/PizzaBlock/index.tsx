@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { addItem } from '../../redux/cart/slice';
 import { CartItem } from '../../redux/cart/types';
 import { selectCartItemById } from '../../redux/cart/selectors';
+import { typeName } from '../../constants';
 
 type PizzaBlockProps = {
   id: number;
@@ -29,8 +30,6 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
   const [activeSize, setActiveSize] = React.useState(0);
 
   const count = cartItem ? cartItem.count : 0;
-
-  const typeName = ['тонкое', 'традиционное'];
 
   const onClickAddPizza = () => {
     const item: CartItem = {
@@ -71,13 +70,13 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
                 key={size}
                 onClick={() => setActiveSize(index)}
                 className={activeSize === index ? 'active' : ''}>
-                {size} см.
+                {size} cm.
               </li>
             ))}
           </ul>
         </div>
         <div className="pizza-block__bottom">
-          <div className="pizza-block__price">от {price} ₽</div>
+          <div className="pizza-block__price">from {price} ₽</div>
           <button onClick={onClickAddPizza} className="button button--outline button--add">
             <svg
               width="12"
@@ -90,7 +89,7 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
                 fill="white"
               />
             </svg>
-            <span>Добавить</span>
+            <span>Add to cart</span>
             {count > 0 && <i>{count}</i>}
           </button>
         </div>

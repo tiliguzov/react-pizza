@@ -1,2 +1,3 @@
 export const sortProperties = ['rating', 'price', 'title'];
-export const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
+export const categories = ['All', 'Meat', 'Vegetarian', 'Grilled', 'Spicy', 'Closed'];
+export const typeName = ['thin', 'traditional'];

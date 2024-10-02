@@ -31,7 +31,7 @@ export const Header: React.FC = () => {
             </div>
           </div>
         </Link>
-        {pathname !== '/cart' && <Search />}
+        {pathname !== '/cart' && pathname.substring(0, 6) !== '/pizza' && <Search />}
 
         <div className="header__cart">
           {pathname !== '/cart' && (

@@ -4,6 +4,7 @@ export type PizzaItem = {
   id: number;
   imageUrl: string;
   title: string;
+  description: string;
   types: number[];
   sizes: number[];
   price: number;

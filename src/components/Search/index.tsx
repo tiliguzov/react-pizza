@@ -48,7 +48,7 @@ export const Search: React.FC = () => {
         value={inputValue}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChangeInput(event.target.value)}
         className={styles.input}
-        placeholder="Поиск пиццы ..."
+        placeholder="Explore pitzas ..."
       />
 
       {inputValue && (

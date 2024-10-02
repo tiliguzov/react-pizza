@@ -5,12 +5,8 @@ import Loadable from 'react-loadable';
 import './scss/app.scss';
 
 import Home from './pages/Home';
-//import FullPizza from './pages/FullPizza';
-//import Cart from './pages/Cart';
-//import NotFound from './pages/NotFound';
 import MainLayout from './layouts/MainLayout';
 
-//const Cart = React.lazy(() => import(/* webpackChunkName: "Cart" */ './pages/Cart'));
 const FullPizza = React.lazy(() => import(/* webpackChunkName: "FullPizza" */ './pages/FullPizza'));
 const NotFound = React.lazy(() => import(/* webpackChunkName: "NotFound" */ './pages/NotFound'));
 

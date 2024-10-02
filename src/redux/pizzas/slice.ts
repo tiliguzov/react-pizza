@@ -21,7 +21,7 @@ export const pizzasSlice = createSlice({
         state.pizzas = action.payload.items;
         state.status = Status.SUCCESS;
       })
-      .addCase(fetchPizzas.rejected, (state, action) => {
+      .addCase(fetchPizzas.rejected, (state) => {
         state.pizzas = [];
         state.status = Status.ERROR;
       });
